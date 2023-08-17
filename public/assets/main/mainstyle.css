@@ -1,0 +1,19 @@
+/* @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800&display=swap');
+*{
+    font-family: 'Cairo', sans-serif;
+}
+
+*::before,
+*::after {
+    font-family: "Font Awesome 5 Free", sans-serif;
+} */
+@import url("https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800&display=swap");
+
+* {
+    font-family: "Cairo", sans-serif;
+}
+
+::before,
+::after {
+    font-family: inherit;
+}
