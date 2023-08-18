@@ -19,6 +19,9 @@ use App\Http\Controllers\SectionController;
 Route::get('/', function () {
     return view('auth.login');
 });
+Route::get('/register', function () {
+    return view('auth.register');
+});
 // Route::get('/dashboard', function () {
 //     return view('dashboard');
 // })->middleware(['auth', 'verified'])->name('dashboard');

@@ -19,5 +19,4 @@
 <link href="{{URL::asset('assets/css-rtl/style-dark.css')}}" rel="stylesheet">
 <!---Skinmodes css-->
 <link href="{{URL::asset('assets/css-rtl/skin-modes.css')}}" rel="stylesheet">
-
 <link href="{{URL::asset('assets/main/mainstyle.css')}}" rel="stylesheet">

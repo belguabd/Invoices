@@ -19,7 +19,6 @@
                 <h4 class="content-title mb-0 my-auto">الاعدادات</h4><span class="text-muted mt-1 tx-13 mr-2 mb-0">/
                     الأقسام</span>
             </div>
-
         </div>
     </div>
     <!-- breadcrumb -->
@@ -28,15 +27,25 @@
     <!-- row -->
     <div class="row ">
         <div class="col-xl-12">
-            @if (session('error'))
+            {{-- @if (session('error'))
                 <div class="alert alert-solid-danger mg-b-0" role="alert">
                     <button aria-label="Close" class="close" data-dismiss="alert" type="button">
                         <span aria-hidden="true">&times;</span></button>
                     {{ session('error') }}
                 </div>
-            @endif
-
-
+            @endif --}}
+            <div class="col-3">
+                @if ($errors->any())
+                    @foreach ($errors->all() as $error)
+                        <div class="alert alert-solid-danger mg-b-0 mb-1" role="alert">
+                            <button aria-label="Close" class="close" data-dismiss="alert" type="button">
+                                <span aria-hidden="true">&times;</span></button>
+                            {{ $error }}
+                        </div>
+                    @endforeach
+                @endif
+            </div>
+            <div class="col-3">
             @if (session('success'))
                 <div class="alert alert-solid-success" role="alert">
                     <button aria-label="Close" class="close" data-dismiss="alert" type="button">
@@ -44,6 +53,7 @@
                     {{ session('success') }}
                 </div>
             @endif
+            </div>
         </div>
     </div>
     <div class="row">
@@ -69,12 +79,14 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>1</td>
-                                        <td>262162</td>
-                                        <td>2023-08-16</td>
-                                        <td>2023-09-16</td>
-                                    </tr>
+                                    @foreach ($sections as $section)
+                                        <tr>
+                                            <td>{{ $section->id }}</td>
+                                            <td>{{ $section->section_name }}</td>
+                                            <td>{{ $section->description }}</td>
+                                            <td>{{ $section->Create_by }}</td>
+                                        </tr>
+                                    @endforeach
                                 </tbody>
                             </table>
                         </div>
@@ -91,7 +103,6 @@
                         <form action="{{ route('sections.store') }}" method="POST">
                             @csrf
                             <div class="modal-body">
-
                                 <div class="mb-3">
                                     <label for="exampleFormControlInput1" class="form-label">اضافه قسم</label>
                                     <input type="text" class="form-control" id="section_name" name="section_name">
@@ -103,7 +114,6 @@
                                 <div class="modal-footer">
                                     <button class="btn ripple btn-secondary" data-dismiss="modal">اغلاق</button>
                                     <input class="btn ripple btn-primary" type="submit" value="تأكيد" />
-
                                 </div>
                             </div>
                         </form>
@@ -113,7 +123,6 @@
             <!--/div-->
             <!--div-->
         </div>
-
     </div>
     <!-- row closed -->
     </div>
@@ -123,7 +132,8 @@
 @endsection
 @section('js')
     <!-- Internal Data tables -->
-    <script src="{{ URL::asset('assets/plugins/datatable/js/jquery.dataTables.min.js') }}"></script>
+    {{-- <script src="{{ URL::asset('assets/plugins/datatable/js/jquery.dataTables.min.js') }}"></script> --}}
+    <script src="{{ URL::asset('assets/plugins/datatable/js/jquery.dataTables.js') }}"></script>
     <script src="{{ URL::asset('assets/plugins/datatable/js/dataTables.dataTables.min.js') }}"></script>
     <script src="{{ URL::asset('assets/plugins/datatable/js/dataTables.responsive.min.js') }}"></script>
     <script src="{{ URL::asset('assets/plugins/datatable/js/responsive.dataTables.min.js') }}"></script>

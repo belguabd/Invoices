@@ -14,7 +14,8 @@ class SectionController extends Controller
      */
     public function index()
     {
-        return view("sections.index");
+        $sections = Section::all();
+        return view("sections.index", compact("sections"));
     }
 
     /**
@@ -30,6 +31,14 @@ class SectionController extends Controller
      */
     public function store(Request $request)
     {
+        $validated = $request->validate([
+            'section_name' => 'required|unique:sections|max:255',
+            'description' => 'required',
+        ], [
+            'section_name.required' => 'يرجى ادخال القسم',
+            'section_name.unique' => 'الاسم مسجل مسبقا',
+            'description.required' => 'يرجى ادخال الوصف',
+        ]);
 
         $section = Section::where('section_name', '=', $request->input("section_name"))->exists();
         if ($section) {
