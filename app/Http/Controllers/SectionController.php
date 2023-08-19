@@ -1,12 +1,9 @@
 <?php
-
 namespace App\Http\Controllers;
-
 use App\Models\Section;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
-
 class SectionController extends Controller
 {
     /**
@@ -17,7 +14,6 @@ class SectionController extends Controller
         $sections = Section::all();
         return view("sections.index", compact("sections"));
     }
-
     /**
      * Show the form for creating a new resource.
      */
@@ -25,7 +21,6 @@ class SectionController extends Controller
     {
         //
     }
-
     /**
      * Store a newly created resource in storage.
      */
@@ -39,7 +34,6 @@ class SectionController extends Controller
             'section_name.unique' => 'الاسم مسجل مسبقا',
             'description.required' => 'يرجى ادخال الوصف',
         ]);
-
         $section = Section::where('section_name', '=', $request->input("section_name"))->exists();
         if ($section) {
             return redirect()->route('sections.index')->with('error', 'خطا القسم مسجل مسبقا');
@@ -59,7 +53,6 @@ class SectionController extends Controller
     {
         //
     }
-
     /**
      * Show the form for editing the specified resource.
      */
@@ -67,20 +60,32 @@ class SectionController extends Controller
     {
         //
     }
-
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Section $section)
+    public function update(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'section_name' => 'required|max:255',
+            'description' => 'required',
+        ], [
+            'section_name.required' => 'يرجى ادخال القسم',
+            'description.required' => 'يرجى ادخال الوصف',
+        ]);
+        $sections = DB::table('sections')
+            ->where('id', $request->section_id)
+            ->update([
+                'section_name' =>  $request->section_name,
+                'description' =>  $request->description
+            ]);
+        return redirect()->route('sections.index')->with('success','تم تعديل القسم بنجاح');
     }
-
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Section $section)
+    public function destroy(Request $request)
     {
-        //
+        $deleted = DB::table('sections')->where('id', '=', $request->section_id)->delete();
+        return redirect()->route('sections.index')->with('success','تم الحذف القسم بنجاح');
     }
 }
