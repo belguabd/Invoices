@@ -64,7 +64,7 @@
 									<h4 class="card-title mg-b-0">الأقسام</h4>
 								</div> --}}
                     <div class="col-2">
-                        <a class="modal-effect btn btn-primary btn-block" data-effect="effect-scale" data-toggle="modal"
+                        <a class="modal-effect btn btn-success " data-effect="effect-scale" data-toggle="modal"
                             href="#modaldemo8"> <i class="fas fa-plus"></i> اضافة قسم</a>
                     </div>
                     <div class="card-body">
@@ -113,14 +113,14 @@
                 <div class="modal-dialog modal-dialog-centered" role="document">
                     <div class="modal-content modal-content-demo">
                         <div class="modal-header">
-                            <h6 class="modal-title">Modal Header</h6><button aria-label="Close" class="close"
+                            <h6 class="modal-title">اضافة قسم</h6><button aria-label="Close" class="close"
                                 data-dismiss="modal" type="button"><span aria-hidden="true">&times;</span></button>
                         </div>
                         <form action="{{ route('sections.store') }}" method="POST" autocomplete="off">
                             @csrf
                             <div class="modal-body">
                                 <div class="mb-3">
-                                    <label for="exampleFormControlInput1" class="form-label">اضافه قسم</label>
+                                    <label for="exampleFormControlInput1" class="form-label">اسم قسم</label>
                                     <input type="text" class="form-control" id="section_name" name="section_name">
                                 </div>
                                 <div class="mb-3">
@@ -129,7 +129,7 @@
                                 </div>
                                 <div class="modal-footer">
                                     <button class="btn ripple btn-secondary" data-dismiss="modal">اغلاق</button>
-                                    <input class="btn ripple btn-primary" type="submit" value="تأكيد" />
+                                    <input class="btn ripple btn-success" type="submit" value="تأكيد" />
                                 </div>
                             </div>
                         </form>
@@ -163,7 +163,7 @@
                                 </div>
                                 <div class="modal-footer">
                                     <button class="btn ripple btn-secondary" data-dismiss="modal">اغلاق</button>
-                                    <input class="btn ripple btn-primary" type="submit" value="تأكيد" />
+                                    <input class="btn ripple btn-success" type="submit" value="تأكيد" />
                                 </div>
                                 <!-- Other form fields -->
                             </form>

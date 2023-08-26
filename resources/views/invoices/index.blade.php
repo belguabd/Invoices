@@ -23,14 +23,21 @@
 @section('content')
     <!-- row -->
     <div class="row">
-
-
         <div class="col-xl-12">
+            <div class="col-3">
+                @if (session('success'))
+                    <div class="alert alert-solid-success" role="alert">
+                        <button aria-label="Close" class="close" data-dismiss="alert" type="button">
+                            <span aria-hidden="true">&times;</span></button>
+                        {{ session('success') }}
+                    </div>
+                @endif
+            </div>
             <div class="card">
                 <div class="card-header pb-0">
-                    <div class="d-flex justify-content-between">
-                        <h4 class="card-title mg-b-0">قائمة الفواتير</h4>
-
+                    <div class="col-2">
+                        <a class="modal-effect btn btn-success " href="{{ route('invoices.create') }}"> <i
+                                class="fas fa-plus"></i> اضافة فاتورة</a>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
@@ -40,44 +47,61 @@
                                         <th class="wd-15p border-bottom-0">#</th>
                                         <th class="wd-15p border-bottom-0">رقم الفاتورة</th>
                                         <th class="wd-15p border-bottom-0"> تاريخ الفاتورة</th>
-                                        <th class="wd-20p border-bottom-0">تاريخ الاستحقاق</th>
-                                        <th class="wd-15p border-bottom-0">المنتج</th>
                                         <th class="wd-10p border-bottom-0">القسم</th>
                                         <th class="wd-25p border-bottom-0">الخصم</th>
-                                        <th class="wd-25p border-bottom-0">نسبه الضريبه</th>
-                                        <th class="wd-25p border-bottom-0">قيمة الضريبة</th>
                                         <th class="wd-25p border-bottom-0">الاجمالي</th>
                                         <th class="wd-25p border-bottom-0">الحالة</th>
-                                        <th class="wd-25p border-bottom-0">ملاحظات</th>
+                                        <th class="wd-20p border-bottom-0">العمليات</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>1</td>
-                                        <td>262162</td>
-                                        <td>2023-08-16</td>
-                                        <td>2023-09-16</td>
-                                        <td>Product A</td>
-                                        <td>Department X</td>
-                                        <td>10%</td>
-                                        <td>5%</td>
-                                        <td>50</td>
-                                        <td>550</td>
-                                        <td>Paid</td>
-                                        <td>ملاحظات لهذه الفاتورة</td>
-                                    </tr>
+                                    @foreach ($invoices as $invoice)
+                                        <tr>
+                                            <td>{{ $invoice->id }}</td>
+                                            <td>{{ $invoice->invoice_number }}</td>
+                                            <td>{{ $invoice->invoice_Date }}</td>
+                                            <td>{{ $invoice->section->section_name }}</td>
+                                            <td>{{ $invoice->Discount }}</td>
+                                            <td>{{ $invoice->Total }}</td>
+                                            <td>
+                                                @if ($invoice->Value_Status == 1)
+                                                    <span
+                                                        class="badge badge-pill badge-success">{{ $invoice->Status }}</span>
+                                                @elseif($invoice->Value_Status == 2)
+                                                    <span
+                                                        class="badge badge-pill badge-danger">{{ $invoice->Status }}</span>
+                                                @else
+                                                    <span
+                                                        class="badge badge-pill badge-warning">{{ $invoice->Status }}</span>
+                                                @endif
+                                            </td>
+                                            <td>
+                                                <div class="btn-group" role="group">
+                                                    <a href="#" class="btn btn-sm btn-info mx-1" data-placement="top"
+                                                        data-toggle="tooltip" title="تعديل على الفاتورة"><i
+                                                            class="fas fa-edit"></i></a>
+                                                    <a href="#" class="btn btn-sm btn-danger mx-1"
+                                                        data-placement="top" data-toggle="tooltip" title="حذف الفاتورة"><i
+                                                            class="fas fa-trash-alt"></i></a>
+                                                    <a href="{{ route('details_invoice.show', ['details_invoice' => $invoice->id]) }}"
+                                                        class="btn btn-sm btn-secondary mx-1" data-placement="top"
+                                                        data-toggle="tooltip" title="عرض الفاتورة"><i
+                                                            class="fas fa-eye"></i></a>
+                                                </div>
+                                            </td>
+
+                                        </tr>
+                                    @endforeach
                                 </tbody>
                             </table>
                         </div>
                     </div>
+
                 </div>
             </div>
             <!--/div-->
-
             <!--div-->
-
         </div>
-
     </div>
     <!-- row closed -->
     </div>
@@ -85,7 +109,6 @@
     </div>
     <!-- main-content closed -->
 @endsection
-
 @section('js')
     <!-- Internal Data tables -->
     <script src="{{ URL::asset('assets/plugins/datatable/js/jquery.dataTables.min.js') }}"></script>

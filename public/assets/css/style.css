@@ -6046,8 +6046,8 @@ textarea.form-control.is-invalid, textarea.form-control.parsley-error {
   background-color: #ecf0fa;
   border: 1px solid #cdd7ef; }
   .pagination .page-link:hover {
-    background-color: #0162e8 !important;
-    border: 1px solid #0162e8 !important; }
+    background-color: #2e8a01 !important;
+    border: 1px solid #2e8a01 !important; }
 
 .pagination .page-item:last-child .page-link, .pagination .page-item:first-child .page-link {
   border-radius: 4px; }
@@ -6061,9 +6061,9 @@ textarea.form-control.is-invalid, textarea.form-control.parsley-error {
   background-color: #455377 !important;
   border: 1px solid #526392 !important; }
   .pagination-dark.pagination .page-link:hover {
-    background: #0162e8 !important;
+    background: #2e8a01 !important;
     color: #fff;
-    border: 1px solid #0162e8 !important; }
+    border: 1px solid #2e8a01 !important; }
 
 /* ###### 3.12 Popover ###### */
 .popover {
@@ -21975,7 +21975,7 @@ table.dataTable thead .sorting_asc:before, table.dataTable thead .sorting_desc:b
   border: 1px solid #cdd7ef; }
 
 .dataTables_paginate .page-item.active .page-link {
-  background-color: #0162e8; }
+  background-color: #2e8a01; }
 
 .dataTables_wrapper .dataTables_paginate .paginate_button.focus {
   background: #0162e8; }
