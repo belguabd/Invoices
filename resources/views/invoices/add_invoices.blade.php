@@ -29,6 +29,7 @@
 @endsection
 @section('content')
 
+
     @if (session()->has('Add'))
         <div class="alert alert-success alert-dismissible fade show" role="alert">
             <strong>{{ session()->get('Add') }}</strong>
@@ -42,11 +43,21 @@
     <div class="row">
 
         <div class="col-lg-12 col-md-12">
-            
+            <div class="col-3">
+                @if ($errors->any())
+                    @foreach ($errors->all() as $error)
+                        <div class="alert alert-solid-danger mg-b-0 mb-1" role="alert">
+                            <button aria-label="Close" class="close" data-dismiss="alert" type="button">
+                                <span aria-hidden="true">&times;</span></button>
+                            {{ $error }}
+                        </div>
+                    @endforeach
+                @endif
+            </div>
             <div class="card">
                 <div class="card-body">
                     <form action="{{ route('invoices.store') }}" method="post" enctype="multipart/form-data"
-                         enctype="multipart/form-data">
+                        enctype="multipart/form-data">
                         @csrf
                         {{-- 1 --}}
 
@@ -54,19 +65,19 @@
                             <div class="col">
                                 <label for="inputName" class="control-label">رقم الفاتورة</label>
                                 <input type="text" class="form-control" id="inputName" name="invoice_number"
-                                    title="يرجي ادخال رقم الفاتورة" required>
+                                    title="يرجي ادخال رقم الفاتورة">
                             </div>
 
                             <div class="col">
                                 <label>تاريخ الفاتورة</label>
                                 <input class="form-control fc-datepicker" name="invoice_Date" placeholder="YYYY-MM-DD"
-                                    type="text" value="{{ date('Y-m-d') }}" required>
+                                    type="text" value="{{ date('Y-m-d') }}">
                             </div>
 
                             <div class="col">
                                 <label>تاريخ الاستحقاق</label>
                                 <input class="form-control fc-datepicker" name="Due_date" placeholder="YYYY-MM-DD"
-                                    type="text" required>
+                                    type="text">
                             </div>
 
                         </div>
@@ -107,8 +118,7 @@
                                 <label for="inputName" class="control-label">مبلغ العمولة</label>
                                 <input type="text" class="form-control form-control-lg" id="Amount_Commission"
                                     name="Amount_Commission" title="يرجي ادخال مبلغ العمولة "
-                                    oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
-                                    required>
+                                    oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
                             </div>
 
                             <div class="col">
@@ -116,7 +126,7 @@
                                 <input type="text" class="form-control form-control-lg" id="Discount" name="Discount"
                                     title="يرجي ادخال مبلغ الخصم "
                                     oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
-                                    value=0 required>
+                                    value=0>
                             </div>
 
                             <div class="col">

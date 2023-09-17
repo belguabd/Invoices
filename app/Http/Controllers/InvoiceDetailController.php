@@ -41,13 +41,14 @@ class InvoiceDetailController extends Controller
      */
     public function show($invoiceId)
     {
-        
+
         $invoice = Invoice::findOrFail($invoiceId);
-        $invoice_detail = Invoice_detail::where('invoice_id', $invoiceId)->get();
+        $invoice_details = Invoice_detail::where('invoice_id', $invoiceId)->get();
         $invoice_Attachments = Invoice_Attachment::where('invoice_id', $invoiceId)->get();
         $product = Product::findOrFail($invoice->product);
+
         // return $invoice_Attachment;
-        return view("invoices.details_invoice", compact('invoice', 'invoice_detail', 'invoice_Attachments','product'));
+        return view("invoices.details_invoice", compact('invoice', 'invoice_details', 'invoice_Attachments', 'product'));
     }
 
     /**
@@ -71,6 +72,5 @@ class InvoiceDetailController extends Controller
      */
     public function destroy(Invoice_detail $invoice_detail)
     {
-      
     }
 }

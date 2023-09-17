@@ -35,6 +35,7 @@ div.dataTables_wrapper div.dataTables_filter input {
 	width: auto !important;
 	margin-bottom: 0;
 	margin-left: 0.5em;
+	border-radius: 6px;
 }
 div.dataTables_wrapper div.dataTables_info {
 	padding-top: 2px;

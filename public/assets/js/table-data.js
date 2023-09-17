@@ -5,7 +5,7 @@ $(function(e) {
 		buttons: [ 'hh', 'excel', 'pdf', 'colvis' ],
 		responsive: true,
 		language: {
-			searchPlaceholder: 'Search...',
+			searchPlaceholder: 'اكتب لي بدا البحث...',
 			sSearch: '',
 			lengthMenu: '_MENU_ ',
 		}
@@ -15,7 +15,7 @@ $(function(e) {
 	
 	$('#example1').DataTable({
 		language: {
-			searchPlaceholder: 'Search...',
+			searchPlaceholder: 'اكتب لي بدا البحث...',
 			sSearch: '',
 			lengthMenu: '_MENU_',
 		}
@@ -23,7 +23,7 @@ $(function(e) {
 	$('#example2').DataTable({
 		responsive: true,
 		language: {
-			searchPlaceholder: 'Search...',
+			searchPlaceholder: 'اكتب لي بدا البحث...',
 			sSearch: '',
 			lengthMenu: '_MENU_',
 		}
@@ -31,7 +31,7 @@ $(function(e) {
 	var table = $('#example-delete').DataTable({
 		responsive: true,
 		language: {
-			searchPlaceholder: 'Search...',
+			searchPlaceholder: 'اكتب لي بدا البحث...',
 			sSearch: '',
 			lengthMenu: '_MENU_',
 		}
@@ -54,7 +54,7 @@ $(function(e) {
 	$('#example-1').DataTable( {
 		responsive: true,
 		language: {
-			searchPlaceholder: 'Search...',
+			searchPlaceholder: 'اكتب لي بدا البحث...',
 			sSearch: '',
 			lengthMenu: '_MENU_',
 		},

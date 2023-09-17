@@ -5,7 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use App\Models\Section;
 use Illuminate\Http\Request;
+use App\Notifications\InvoicePaid;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Notification;
 
 class ProductController extends Controller
 {
@@ -33,7 +36,7 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         // return $request;
-   
+
         $validated = $request->validate([
             'product_name' => 'required|unique:products|max:255',
             'section_id' => 'numeric|required',
@@ -50,6 +53,9 @@ class ProductController extends Controller
         $product->description = $request->input('description');
         $product->section_id = $request->input('section_id');
         $product->save();
+        $user = Auth::user();
+        
+        Notification::send($user, new InvoicePaid($product));
         return redirect()->route("products.index")->with('success', 'تم انشاء المنتج بنجاح');
     }
 

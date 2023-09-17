@@ -18,15 +18,7 @@
     <div class="row  ">
         <div class="col-lg-12 col-md-12">
             <div class="col-3">
-                @if ($errors->any())
-                    @foreach ($errors->all() as $error)
-                        <div class="alert alert-solid-danger mg-b-0 mb-1" role="alert">
-                            <button aria-label="Close" class="close" data-dismiss="alert" type="button">
-                                <span aria-hidden="true">&times;</span></button>
-                            {{ $error }}
-                        </div>
-                    @endforeach
-                @endif
+
                 @if (session('success'))
                     <div class="alert alert-solid-success" role="alert">
                         <button aria-label="Close" class="close" data-dismiss="alert" type="button">
@@ -42,10 +34,12 @@
                             <div class="tabs-menu1 font-weight-bold">
                                 <!-- Tabs -->
                                 <ul class="nav panel-tabs main-nav-line ">
-                                    <li><a href="#tab4" class="nav-link fw-bolder active " data-toggle="tab">معلومات
+                                    <li><a href="#tab4" class="nav-link fw-bolder active " data-toggle="tab"><i class="fas fa-info-circle"></i>&nbsp;معلومات
                                             الفاتورة</a></li>
-                                    <li><a href="#tab5" class="nav-link" data-toggle="tab">حالات الدفع</a></li>
-                                    <li><a href="#tab6" class="nav-link" data-toggle="tab">المرفقات</a></li>
+                                    <li><a href="#tab5" class="nav-link" data-toggle="tab"><i
+                                                class="fas fa-money-bill-alt"></i>&nbsp;حالات الدفع</a></li>
+
+                                    <li><a href="#tab6" class="nav-link" data-toggle="tab"><i class="fas fa-link"></i>&nbsp;المرفقات</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -116,37 +110,45 @@
                                             <div class="table-responsive">
                                                 <table class="table table-bordered">
                                                     <thead>
-                                                        <tr>
+                                                        <tr class="text-dark">
                                                             <th>#</th>
                                                             <th>رقم الفاتورة</th>
-                                                            <th>المنتج</th>
+                                                            <th>نوع المنتج</th>
                                                             <th>القسم</th>
-                                                            <th>الحالة</th>
+                                                            <th>حالة الدفع</th>
+                                                            <th>تاريخ الدفع </th>
+                                                            <th>ملاحظات</th>
+                                                            <th>تاريخ الاضافة </th>
                                                             <th>المستخدم</th>
-                                                            <th>تاريخ الإنشاء</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        <tr>
-                                                            <td>{{ $invoice->id }}</td>
-                                                            <td>{{ $invoice->invoice_number }}</td>
-                                                            <td> {{ $product->product_name }}</td>
-                                                            <td>{{ $invoice->section->section_name }}</td>
-                                                            <td>
-                                                                @if ($invoice->Value_Status == 1)
-                                                                    <span
-                                                                        class="badge   badge-success">{{ $invoice->Status }}</span>
-                                                                @elseif($invoice->Value_Status == 2)
-                                                                    <span
-                                                                        class="badge  badge-danger">{{ $invoice->Status }}</span>
+                                                        @foreach ($invoice_details as $invoice_detail)
+                                                            <tr>
+                                                                <td>{{ $invoice_detail->invoice_id }}</td>
+                                                                <td>{{ $invoice_detail->invoice_number }}</td>
+                                                                <td> {{ $product->product_name }}</td>
+                                                                <td>{{ $invoice->section->section_name }}</td>
+                                                                @if ($invoice_detail->Value_Status == 1)
+                                                                    <td><span
+                                                                            class="badge badge-pill badge-success">{{ $invoice_detail->Status }}</span>
+                                                                    </td>
+                                                                @elseif($invoice_detail->Value_Status == 2)
+                                                                    <td><span
+                                                                            class="badge badge-pill badge-danger">{{ $invoice_detail->Status }}</span>
+                                                                    </td>
                                                                 @else
-                                                                    <span
-                                                                        class="badge  badge-warning">{{ $invoice->Status }}</span>
+                                                                    <td><span
+                                                                            class="badge badge-pill badge-warning">{{ $invoice_detail->Status }}</span>
+                                                                    </td>
                                                                 @endif
-                                                            </td>
-                                                            <td>{{ Auth::user()->name }}</td>
-                                                            <td> {{ $invoice->invoice_Date }}</td>
-                                                        </tr>
+                                                                <td>{{ $invoice_detail->Payment_Date }}</td>
+                                                                <td>{{ $invoice_detail->note }}</td>
+                                                                <td>{{ $invoice_detail->created_at }}</td>
+                                                                <td>{{ $invoice_detail->user }}</td>
+                                                            </tr>
+                                                        @endforeach
+
                                                     </tbody>
                                                 </table>
                                             </div>
@@ -155,7 +157,8 @@
                                 </div>
                                 <div class="tab-pane" id="tab6">
                                     <div class="card-body">
-                                        <form action="{{ route('invoice_Attachment.store') }}" method="post" enctype="multipart/form-data">
+                                        <form action="{{ route('invoice_Attachment.store') }}" method="post"
+                                            enctype="multipart/form-data">
                                             @csrf
                                             <div class="row mb-4">
                                                 <div class="col-md-6">
@@ -166,11 +169,17 @@
                                             <div class="row mb-3">
                                                 <div class="col-md-12">
                                                     <div class="custom-file">
-                                                        <input type="hidden" name="invoice_number" value="{{ $invoice->invoice_number }}">
-                                                        <input type="hidden" name="create_by" value="{{ Auth::user()->name }}">
-                                                        <input type="hidden" name="invoice_id" value="{{ $invoice->id }}">
-                                                        <input class="custom-file-input" id="customFile" name="pic" type="file">
-                                                        <label class="custom-file-label" for="customFile" accept=".pdf,.jpg,.png,image/jpeg,image/png" data-height="70">اختر ملف</label>
+                                                        <input type="hidden" name="invoice_number"
+                                                            value="{{ $invoice->invoice_number }}">
+                                                        <input type="hidden" name="create_by"
+                                                            value="{{ Auth::user()->name }}">
+                                                        <input type="hidden" name="invoice_id"
+                                                            value="{{ $invoice->id }}">
+                                                        <input class="custom-file-input" id="customFile" name="pic"
+                                                            type="file">
+                                                        <label class="custom-file-label" for="customFile"
+                                                            accept=".pdf,.jpg,.png,image/jpeg,image/png"
+                                                            data-height="70">اختر ملف</label>
                                                     </div>
                                                 </div>
                                             </div>
@@ -180,7 +189,7 @@
                                                 </div>
                                             </div>
                                         </form>
-                                        
+
                                         <div class="table-responsive">
                                             @if ($invoice_Attachments)
                                                 <table class="table table-bordered">
@@ -200,7 +209,8 @@
                                                                 <td>{{ $invoice_Attachment->created_at }}</td>
                                                                 <td>
                                                                     <a href="{{ route('files.action', ['invoice' => $invoice->invoice_number, 'filename' => $invoice_Attachment->file_name, 'action' => 'view']) }}"
-                                                                        class="btn btn-sm btn-outline-success" target="_blank">
+                                                                        class="btn btn-sm btn-outline-success"
+                                                                        target="_blank">
                                                                         <i class="fas fa-eye"></i> عرض
                                                                     </a>
                                                                     <a href="{{ route('files.action', ['invoice' => $invoice->invoice_number, 'filename' => $invoice_Attachment->file_name, 'action' => 'download']) }}"
@@ -208,7 +218,8 @@
                                                                         <i class="fas fa-download"></i> تحميل
                                                                     </a>
                                                                     <a class="modal-effect btn btn-sm btn-outline-danger open-delete-modal"
-                                                                        data-effect="effect-scale" data-toggle="modal" href="#modaldelete">
+                                                                        data-effect="effect-scale" data-toggle="modal"
+                                                                        href="#modaldelete">
                                                                         <i class="fas fa-trash-alt"></i> حذف
                                                                     </a>
                                                                 </td>
@@ -223,7 +234,7 @@
                                             @endif
                                         </div>
                                     </div>
-                                    
+
                                 </div>
                             </div>
                         </div>
@@ -273,5 +284,4 @@
     <!-- main-content closed -->
 @endsection
 @section('js')
-
 @endsection

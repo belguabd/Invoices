@@ -31,3 +31,27 @@
 <!-- custom js -->
 <script src="{{URL::asset('assets/js/custom.js')}}"></script><!-- Left-menu js-->
 <script src="{{URL::asset('assets/plugins/side-menu/sidemenu.js')}}"></script>
+
+<!-- resources/views/layouts/app.blade.php -->
+<!-- ... your layout content ... -->
+
+
+<script>
+    function checkInternetConnection() {
+        if (navigator.onLine) {
+            // Online
+            document.getElementById('no-internet-alert').style.display = 'none';
+        } else {
+            // Offline
+            document.getElementById('no-internet-alert').style.display = 'block';
+        }
+    }
+    
+    checkInternetConnection(); // Initial check
+    
+    window.addEventListener('online', checkInternetConnection);
+    window.addEventListener('offline', checkInternetConnection);
+    </script>
+    </body>
+    </html>
+    
