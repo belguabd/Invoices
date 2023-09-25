@@ -19,9 +19,8 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
-        $data = User::orderBy('id', 'DESC')->paginate(5);
-        return view('users.index', compact('data'))
-            ->with('i', ($request->input('page', 1) - 1) * 5);
+        $users = User::all();
+        return view('users.index', compact('users'));
     }
     /**
      * Show the form for creating a new resource.
@@ -41,18 +40,27 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request, [
+
+        $request->validate([
             'name' => 'required',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|same:confirm-password',
-            'roles' => 'required'
+            'roles_name' => 'required',
+        ], [
+            'name.required' => 'ادخل الحقل خاص بالاسم',
+            'email.required' => 'ادخل الحقل خاص بالبريد الإلكتروني',
+            'email.email' => 'البريد الإلكتروني يجب أن يكون عنوان بريد إلكتروني صحيح',
+            'email.unique' => 'هذا البريد الإلكتروني مستخدم بالفعل',
+            'password.required' => 'ادخل الحقل خاص بكلمة المرور',
+            'password.same' => 'يجب أن تتطابق كلمة المرور مع تأكيد كلمة المرور',
+            'roles_name.required' => 'ادخل الحقل خاص بالأدوار',
         ]);
         $input = $request->all();
         $input['password'] = Hash::make($input['password']);
         $user = User::create($input);
-        $user->assignRole($request->input('roles'));
+        $user->assignRole($request->input('roles_name'));
         return redirect()->route('users.index')
-            ->with('success', 'User created successfully');
+            ->with('success', 'تم إنشاء المستخدم بنجاح');
     }
     /**
      * Display the specified resource.
@@ -87,24 +95,38 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
+        
         $this->validate($request, [
             'name' => 'required',
             'email' => 'required|email|unique:users,email,' . $id,
             'password' => 'same:confirm-password',
-            'roles' => 'required'
+            'roles_name' => 'required'
+        ], [
+            'name.required' => 'ادخل الحقل خاص بالاسم',
+            'email.required' => 'ادخل الحقل خاص بالبريد الإلكتروني',
+            'email.email' => 'البريد الإلكتروني يجب أن يكون عنوان بريد إلكتروني صحيح',
+            'email.unique' => 'هذا البريد الإلكتروني مستخدم بالفعل',
+            'password.required' => 'ادخل الحقل خاص بكلمة المرور',
+            'password.same' => 'يجب أن تتطابق كلمة المرور مع تأكيد كلمة المرور',
+            'roles_name.required' => 'ادخل الحقل خاص بالأدوار',
         ]);
         $input = $request->all();
-        if (!empty($input['password'])) {
-            $input['password'] = Hash::make($input['password']);
-        } else {
-            $input = Arr::except($input, ['password']);
-        }
         $user = User::find($id);
-        $user->update($input);
+
+        if (!empty($input['password'])) {
+            $user->password = Hash::make($input['password']);
+        }
+
+        // Update user fields
+        $user->fill($input);
+        $user->save();
+
+        // Delete existing roles and assign new ones
         DB::table('model_has_roles')->where('model_id', $id)->delete();
-        $user->assignRole($request->input('roles'));
+        $user->assignRole($request->input('roles_name'));
+
         return redirect()->route('users.index')
-            ->with('success', 'User updated successfully');
+            ->with('success', 'تم تحديث المستخدم بنجاح');
     }
     /**
      * Remove the specified resource from storage.

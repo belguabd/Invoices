@@ -45,7 +45,7 @@
             <div class="card">
                 <div class="card-header pb-0">
                     <div class="col-2">
-                        <a class="modal-effect btn btn-success btn-block" data-effect="effect-scale" data-toggle="modal"
+                        <a class="modal-effect btn btn-success btn-sm font-weight-bold p-2" data-effect="effect-scale" data-toggle="modal"
                             href="#modaldemo8"> <i class="fas fa-plus"></i> اضافة منتج</a>
                     </div>
                     <div class="card-body">

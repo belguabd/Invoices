@@ -21,54 +21,27 @@
 <!-- breadcrumb -->
 @endsection
 @section('content')
-
-
-@if (session()->has('Add'))
-    <script>
-        window.onload = function() {
-            notif({
-                msg: " تم اضافة الصلاحية بنجاح",
-                type: "success"
-            });
-        }
-
-    </script>
-@endif
-
-@if (session()->has('edit'))
-    <script>
-        window.onload = function() {
-            notif({
-                msg: " تم تحديث بيانات الصلاحية بنجاح",
-                type: "success"
-            });
-        }
-
-    </script>
-@endif
-
-@if (session()->has('delete'))
-    <script>
-        window.onload = function() {
-            notif({
-                msg: " تم حذف الصلاحية بنجاح",
-                type: "error"
-            });
-        }
-
-    </script>
-@endif
-
 <!-- row -->
 <div class="row row-sm">
     <div class="col-xl-12">
+        <div class="col-3">
+            @if (session('success'))
+                <div class="alert alert-solid-success" role="alert">
+                    <button aria-label="Close" class="close" data-dismiss="alert" type="button">
+                        <span aria-hidden="true">&times;</span></button>
+                    {{ session('success') }}
+                </div>
+            @endif
+        </div>
         <div class="card">
             <div class="card-header pb-0">
                 <div class="d-flex justify-content-between">
                     <div class="col-lg-12 margin-tb">
                         <div class="pull-right">
                             @can('اضافة صلاحية')
-                                <a class="btn btn-primary btn-sm" href="{{ route('roles.create') }}">اضافة</a>
+                                <a class="btn btn-success btn-sm" href="{{ route('roles.create') }}">
+                                    <i class="fas fa-plus"></i> اضافة
+                                </a>
                             @endcan
                         </div>
                     </div>
@@ -78,7 +51,7 @@
             </div>
             <div class="card-body">
                 <div class="table-responsive">
-                    <table class="table mg-b-0 text-md-nowrap table-hover ">
+                    <table class="table table-bordered table-striped table-hover">
                         <thead>
                             <tr>
                                 <th>#</th>
@@ -87,31 +60,33 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($roles as $key => $role)
+                            @foreach ($roles as $role)
                                 <tr>
-                                    <td>{{ ++$i }}</td>
+                                    <td>{{ $role->id }}</td>
                                     <td>{{ $role->name }}</td>
                                     <td>
                                         @can('عرض صلاحية')
-                                            <a class="btn btn-success btn-sm"
-                                                href="{{ route('roles.show', $role->id) }}">عرض</a>
+                                            <a class="btn btn-success btn-sm" href="{{ route('roles.show', $role->id) }}">
+                                                <i class="fas fa-eye"></i> عرض
+                                            </a>
                                         @endcan
-                                        
+
                                         @can('تعديل صلاحية')
-                                            <a class="btn btn-primary btn-sm"
-                                                href="{{ route('roles.edit', $role->id) }}">تعديل</a>
+                                            <a class="btn btn-primary btn-sm" href="{{ route('roles.edit', $role->id) }}">
+                                                <i class="fas fa-edit"></i> تعديل
+                                            </a>
                                         @endcan
 
                                         @if ($role->name !== 'owner')
                                             @can('حذف صلاحية')
-                                                {!! Form::open(['method' => 'DELETE', 'route' => ['roles.destroy',
-                                                $role->id], 'style' => 'display:inline']) !!}
-                                                {!! Form::submit('حذف', ['class' => 'btn btn-danger btn-sm']) !!}
+                                                {!! Form::open(['method' => 'DELETE', 'route' => ['roles.destroy', $role->id], 'style' => 'display:inline']) !!}
+                                                <button type="submit" class="btn btn-danger btn-sm"
+                                                    onclick="return confirm('هل أنت متأكد من حذف هذه الصلاحية؟')">
+                                                    <i class="fas fa-trash"></i> حذف
+                                                </button>
                                                 {!! Form::close() !!}
                                             @endcan
                                         @endif
-
-
                                     </td>
                                 </tr>
                             @endforeach
@@ -119,6 +94,7 @@
                     </table>
                 </div>
             </div>
+
         </div>
     </div>
     <!--/div-->

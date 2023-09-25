@@ -63,8 +63,8 @@
                     {{-- <div class="d-flex justify-content-between">
 									<h4 class="card-title mg-b-0">الأقسام</h4>
 								</div> --}}
-                    <div class="col-2">
-                        <a class="modal-effect btn btn-success " data-effect="effect-scale" data-toggle="modal"
+                    <div class="col-3">
+                        <a class="modal-effect btn btn-success btn-sm font-weight-bold p-2 " data-effect="effect-scale" data-toggle="modal"
                             href="#modaldemo8"> <i class="fas fa-plus"></i> اضافة قسم</a>
                     </div>
                     <div class="card-body">

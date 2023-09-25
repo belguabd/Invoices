@@ -31,20 +31,23 @@
 
 @section('content')
 
-@if (session('success'))
-    <div class="alert alert-success">
-        {{ session('success') }}
-    </div>
-@endif
-
 <!-- row opened -->
 <div class="row row-sm">
     <div class="col-xl-12">
+        <div class="col-3">
+            @if (session('success'))
+                <div class="alert alert-solid-success" role="alert">
+                    <button aria-label="Close" class="close" data-dismiss="alert" type="button">
+                        <span aria-hidden="true">&times;</span></button>
+                    {{ session('success') }}
+                </div>
+            @endif
+        </div>
         <div class="card">
             <div class="card-header pb-0">
                 <div class="col-sm-1 col-md-2">
                     @can('اضافة مستخدم')
-                        <a class="btn btn-primary btn-sm" href="{{ route('users.create') }}">اضافة مستخدم</a>
+                        <a class="btn btn-success btn-sm font-weight-bold p-2" href="{{ route('users.create') }}">اضافة مستخدم&nbsp;<i class="fas fa-user-plus"></i></a>
                     @endcan
                 </div>
             </div>
@@ -62,27 +65,27 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($data as $key => $user)
+                            @foreach ($users as $user)
                                 <tr>
-                                    <td>{{ ++$i }}</td>
+                                    <td>{{ $user->id }}</td>
                                     <td>{{ $user->name }}</td>
                                     <td>{{ $user->email }}</td>
                                     <td>
-                                        @if ($user->Status == 'مفعل')
+                                        @if ($user->status == 'مفعل')
                                             <span class="label text-success d-flex">
-                                                <div class="dot-label bg-success ml-1"></div>{{ $user->Status }}
+                                                <div class="dot-label bg-success ml-1"></div>{{ $user->status }}
                                             </span>
                                         @else
                                             <span class="label text-danger d-flex">
-                                                <div class="dot-label bg-danger ml-1"></div>{{ $user->Status }}
+                                                <div class="dot-label bg-danger ml-1"></div>{{ $user->status }}
                                             </span>
                                         @endif
                                     </td>
 
                                     <td>
                                         @if (!empty($user->getRoleNames()))
-                                            @foreach ($user->getRoleNames() as $v)
-                                                <label class="badge badge-success">{{ $v }}</label>
+                                            @foreach ($user->getRoleNames() as $role)
+                                                <label class="badge badge-success">{{ $role }}</label>
                                             @endforeach
                                         @endif
                                     </td>
@@ -95,9 +98,45 @@
 
                                         @can('حذف مستخدم')
                                             <a class="modal-effect btn btn-sm btn-danger" data-effect="effect-scale"
-                                                data-user_id="{{ $user->id }}" data-username="{{ $user->name }}"
-                                                data-toggle="modal" href="#modaldemo8" title="حذف"><i
+                                                data-toggle="modal" href="#modaldelete" title="حذف"><i
                                                     class="las la-trash"></i></a>
+                                            <!-- ========== model delete ========== -->
+                                            <div class="modal fade" id="modaldelete" tabindex="-1" role="dialog"
+                                                aria-labelledby="modaldelete" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="modalEditLabel">حذف المستخدم</h5>
+                                                            <button type="button" class="close" data-dismiss="modal"
+                                                                aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            @if ($users)
+                                                                <form
+                                                                    action="{{ route('users.destroy', ['user' => $user->id]) }}"
+                                                                    method="POST">
+                                                                    @csrf
+                                                                    @method('DELETE')
+                                                                    <div class="form-group text-right">
+                                                                        <label for="editSectionName" class="tx-15" >هل تريد حذف المستخدم ؟</label>
+                                                                    </div>
+                                                                    
+                                                                    <div class="modal-footer">
+                                                                        <button class="btn ripple btn-secondary"
+                                                                            data-dismiss="modal">الغاء</button>
+                                                                        <input class="btn ripple btn-danger" type="submit"
+                                                                            value="تأكيد" />
+                                                                    </div>
+                                                                    <!-- Other form fields -->
+                                                                </form>
+                                                            @endif
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- ========== End delete ========== -->
                                         @endcan
                                     </td>
                                 </tr>
@@ -110,30 +149,7 @@
     </div>
     <!--/div-->
 
-    <!-- Modal effects -->
-    <div class="modal" id="modaldemo8">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content modal-content-demo">
-                <div class="modal-header">
-                    <h6 class="modal-title">حذف المستخدم</h6><button aria-label="Close" class="close"
-                        data-dismiss="modal" type="button"><span aria-hidden="true">&times;</span></button>
-                </div>
-                <form action="{{ route('users.destroy', 'test') }}" method="post">
-                    {{ method_field('delete') }}
-                    {{ csrf_field() }}
-                    <div class="modal-body">
-                        <p>هل انت متاكد من عملية الحذف ؟</p><br>
-                        <input type="hidden" name="user_id" id="user_id" value="">
-                        <input class="form-control" name="username" id="username" type="text" readonly>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">الغاء</button>
-                        <button type="submit" class="btn btn-danger">تاكيد</button>
-                    </div>
-            </div>
-            </form>
-        </div>
-    </div>
+
 </div>
 
 </div>

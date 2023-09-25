@@ -198,10 +198,10 @@
                                                                 method="POST">
                                                                 @csrf
                                                                 @method('DELETE')
-                                                                <div class="form-group">
-                                                                    <label for="editSectionName">هل تريد حذف الفاتورة
-                                                                        ؟</label>
+                                                                <div class="form-group ">
+                                                                    <label for="editSectionName">هل تريد حذف الفاتورة ؟</label>
                                                                 </div>
+                                                                
                                                                 <div class="modal-footer">
                                                                     <button class="btn ripple btn-secondary"
                                                                         data-dismiss="modal">الغاء</button>

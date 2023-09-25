@@ -101,5 +101,6 @@ Route::group(['middleware' => ['auth']], function () {
         'users' => UserController::class,
     ]);
 });
+Route::view('/reports','reports.test');
 Route::get('/home', [HomeController::class, 'index']);
 Route::get('/{page}', [AdminController::class, 'index']);
